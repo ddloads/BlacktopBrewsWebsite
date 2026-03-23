@@ -1,0 +1,469 @@
+{
+  "business": {
+    "name": "Blacktop Brews",
+    "tagline": "Blacktop Brews is your local pick‑me‑up with personality.",
+    "logo": "/uploads/1771552343949-5u7fcsnsdgk.png",
+    "heroText": "We serve up the classics you love and the seasonal chaos you didn’t know you needed.",
+    "email": "blacktop.brew@gmail.com",
+    "location": "107 Mitchell Street Greenfield, M0",
+    "hours": {
+      "title": "",
+      "subtitle": "",
+      "schedule": [
+        {
+          "day": "Monday",
+          "time": "7:00 AM - 11:00 AM / 2:00 PM - 6:00 PM",
+          "location": "",
+          "closed": false
+        },
+        {
+          "day": "Tuesday",
+          "time": "7:00 AM - 11:00 AM / 2:00 PM - 6:00 PM",
+          "location": "",
+          "closed": false
+        },
+        {
+          "day": "Wednesday",
+          "time": "7:00 AM - 11:00 AM / 2:00 PM - 6:00 PM",
+          "location": "",
+          "closed": false
+        },
+        {
+          "day": "Thursday",
+          "time": "7:00 AM - 11:00 AM / 2:00 PM - 6:00 PM",
+          "location": "",
+          "closed": false
+        },
+        {
+          "day": "Friday",
+          "time": "7:00 AM - 11:00 AM / 2:00 PM - 6:00 PM",
+          "location": "",
+          "closed": false
+        },
+        {
+          "day": "Saturday",
+          "time": "10:00 AM - 2:00 PM",
+          "location": "",
+          "closed": false
+        },
+        {
+          "day": "Sunday",
+          "time": "",
+          "location": "",
+          "closed": true
+        }
+      ]
+    },
+    "aboutTitle": "Roadside Roots",
+    "aboutText": [
+      "Blacktop Brews started as a simple idea: good coffee, good people, and a whole lot of personality. We’re a small‑town, roadside stop with big flavor and zero pretension — the kind of place where your drink is made with care, your name is remembered, and the weather is always part of the conversation.",
+      "We keep the classics you love, but we’re never afraid to shake things up. Every season brings new flavors, new experiments, and a little bit of controlled chaos — all crafted to fit the moods, storms, and backroads of Missouri life. Whether you’re rolling through for your daily pick‑me‑up or trying something bold, we’re here to make your day a little better (and a lot more caffeinated)."
+    ],
+    "contactTitle": "Pull Over & Say Hey",
+    "contactText": "Got a question, a drink idea, or just want to say hi? I’m always happy to hear from the folks who keep Blacktop rolling.\nSend a message anytime — I’ll get back to you as soon as I’m done slinging lattes and arguing with the Missouri weather.",
+    "socialLinks": {
+      "facebook": "https://www.facebook.com/people/Blacktop-Brews/61579886220123/",
+      "instagram": "https://www.instagram.com/blacktop_brews/",
+      "nextdoor": "https://nextdoor.com/pages/blacktop-brews-jackson-mi/",
+      "googleMaps": "https://maps.app.goo.gl/6eckD6wRHRZmE78p6"
+    }
+  },
+  "features": [
+    {
+      "id": 1,
+      "title": "Premium Beans",
+      "description": "Quality coffee sourced from the finest roasters",
+      "icon": "coffee"
+    },
+    {
+      "id": 2,
+      "title": "Made Fresh",
+      "description": "Every drink crafted to order, just for you",
+      "icon": "clock"
+    },
+    {
+      "id": 3,
+      "title": "Fully Customizable",
+      "description": "Endless flavor combinations to explore",
+      "icon": "customize"
+    }
+  ],
+  "heroGallery": {
+    "images": [
+      {
+        "url": "/uploads/1771553490993-4oyl6kgif4p.webp",
+        "alt": "Coffee_Beans_Blog_2048x",
+        "link": ""
+      },
+      {
+        "url": "/uploads/1772243925748-g1hs0g186k.jpg",
+        "alt": "pngtree-a-cup-of-coffee-with-smoke-made-of-coffee-beans-and-image_15672105",
+        "link": ""
+      },
+      {
+        "url": "/uploads/1772245102134-kd19bhruf7h.jpg",
+        "alt": "photo-1509785307050-d4066910ec1e",
+        "link": ""
+      },
+      {
+        "url": "/uploads/1772245166918-anrqdkh8fgc.jpg",
+        "alt": "thumb-1920-332047",
+        "link": ""
+      },
+      {
+        "url": "/uploads/1772245214213-3pcwu32f94a.jpg",
+        "alt": "954512",
+        "link": ""
+      },
+      {
+        "url": "/uploads/1772245284790-o7fjsmdew4.webp",
+        "alt": "magical-coffee-dance-stockcake",
+        "link": ""
+      },
+      {
+        "url": "/uploads/1772245411646-owpjui4q8f.jpg",
+        "alt": "desktop-wallpaper-coffee-croissant-grain-cup-food-vapor-bakery",
+        "link": ""
+      },
+      {
+        "url": "/uploads/1772245499601-6sok2ynfse6.jpg",
+        "alt": "56893-coffee-cup-mugs-drink-depth_of_field-macro",
+        "link": ""
+      }
+    ],
+    "autoSlide": true,
+    "slideInterval": 5000
+  },
+  "menu": {
+    "title": "Your Favorites, Our Flavor",
+    "subtitle": "Signature sips, community favorites, and endless ways to make it yours.   (prices shown are for 12oz size & increase accordingly))",
+    "categories": [
+      {
+        "id": "espresso",
+        "name": "Signature Drinks",
+        "order": 2,
+        "active": true,
+        "items": [
+          {
+            "id": 6,
+            "name": "Blacktop Classic",
+            "description": "Espresso, Classic Caramel & Vanilla",
+            "price": 3.75,
+            "active": true
+          },
+          {
+            "id": 11,
+            "name": "Backroad Mocha",
+            "description": "Espresso, Hazelnut, Brown Sugar, & Chocolate Drizzle",
+            "price": 3.75,
+            "active": true
+          },
+          {
+            "id": 12,
+            "name": "Honey Hitch",
+            "description": "Espresso, Local Honey & Cinnamon",
+            "price": 3.75,
+            "active": true
+          },
+          {
+            "id": 13,
+            "name": "Roadside Roast",
+            "description": "Espresso, Toasted Marshmallow, Brown Sugar, & Chocolate Drizzle",
+            "price": 3.75,
+            "active": true
+          }
+        ]
+      },
+      {
+        "id": "non-coffee",
+        "name": "Seasonal Drinks",
+        "order": 3,
+        "active": true,
+        "items": [
+          {
+            "id": 7,
+            "name": "Bon-Fire Me",
+            "description": "Espresso, Hazelnut, Salted Caramel, & Chocolate Drizzle",
+            "price": 3.75,
+            "active": true
+          },
+          {
+            "id": 8,
+            "name": "Chill Out",
+            "description": "Espresso, Peppermint, & White Chocolate Drizzle",
+            "price": 3.75,
+            "active": true
+          },
+          {
+            "id": 9,
+            "name": "Shock Wave",
+            "description": "Redbull & Strawberry",
+            "price": 4.25,
+            "active": true
+          },
+          {
+            "id": 10,
+            "name": "Blue Bite Me",
+            "description": "Sprite, Blue Raspberry, & Lemon Zest",
+            "price": 3.75,
+            "active": true
+          }
+        ]
+      },
+      {
+        "id": "lemonade",
+        "name": "Lemonade",
+        "order": 3,
+        "items": [
+          {
+            "id": 14,
+            "name": "Yellow Sunrise",
+            "description": "Lemonade, Orange & Strawberry",
+            "price": 3.5,
+            "active": true
+          },
+          {
+            "id": 15,
+            "name": "Purple Passion",
+            "description": "Lemonade, Blue Raspberry & Strawberry",
+            "price": 3.5,
+            "active": true
+          },
+          {
+            "id": 16,
+            "name": "Lemon Dreamsicle",
+            "description": "Lemonade, Orange & Vanilla",
+            "price": 3.5,
+            "active": true
+          },
+          {
+            "id": 26,
+            "name": "Lemonade",
+            "description": "Just Lemonade",
+            "price": 3.25,
+            "active": true
+          }
+        ],
+        "active": true
+      },
+      {
+        "id": "redbull---energy",
+        "name": "Redbull - Energy",
+        "order": 4,
+        "items": [
+          {
+            "id": 17,
+            "name": "Storm Surge",
+            "description": "Redbull, Blue Raspberry & Strawberry",
+            "price": 4.25,
+            "active": true
+          },
+          {
+            "id": 18,
+            "name": "Blue Bolt",
+            "description": "Redbull, Blue Raspberry & Lemon Zest",
+            "price": 4.25,
+            "active": true
+          },
+          {
+            "id": 19,
+            "name": "Zinger",
+            "description": "Redbull, Orange & Strawberry",
+            "price": 4.25,
+            "active": true
+          }
+        ],
+        "active": true
+      },
+      {
+        "id": "cream-soda",
+        "name": "Cream Soda",
+        "order": 5,
+        "items": [
+          {
+            "id": 20,
+            "name": "Dreamy Sunrise",
+            "description": "Orange, Strawberry, Vanilla, & Cold Cream",
+            "price": 3.5,
+            "active": true
+          },
+          {
+            "id": 21,
+            "name": "Orange Creamsicle",
+            "description": "Orange, Vanilla, & Cold Cream",
+            "price": 3.5,
+            "active": true
+          },
+          {
+            "id": 22,
+            "name": "Raspberry Couli",
+            "description": "Raspberry, Vanilla, & Cold Cream",
+            "price": 3.5,
+            "active": true
+          }
+        ],
+        "active": true
+      },
+      {
+        "id": "build-your-own",
+        "name": "Build Your Own",
+        "order": 6,
+        "items": [
+          {
+            "id": 23,
+            "name": "Latte",
+            "description": "(prices will vary depending on size & ingredients)",
+            "price": 3.5,
+            "active": true
+          },
+          {
+            "id": 24,
+            "name": "Spritzer",
+            "description": "(prices will vary depending on size & ingredients)",
+            "price": 3.25,
+            "active": true
+          },
+          {
+            "id": 25,
+            "name": "Steamer",
+            "description": "(prices will vary depending on size & ingredients)",
+            "price": 3.25,
+            "active": true
+          }
+        ],
+        "active": true
+      },
+      {
+        "id": "other-menu-items",
+        "name": "Other Menu Items",
+        "order": 7,
+        "items": [
+          {
+            "id": 27,
+            "name": "Americano",
+            "description": "Espresso & Hot Water (milk & sweetener optional)",
+            "price": 3,
+            "active": true
+          },
+          {
+            "id": 28,
+            "name": "Hot Chocolate",
+            "description": "DF - GF - Vegan (upcharge for milk)",
+            "price": 3,
+            "active": true
+          },
+          {
+            "id": 29,
+            "name": "Spiced Apple Cider",
+            "description": "(sugar free available)",
+            "price": 3,
+            "active": true
+          }
+        ],
+        "active": true
+      },
+      {
+        "id": "food",
+        "name": "Food",
+        "order": 8,
+        "items": [
+          {
+            "id": 30,
+            "name": "Croissant - Plain",
+            "description": "Plain",
+            "price": 2.5,
+            "active": true
+          },
+          {
+            "id": 31,
+            "name": "Croissant - Cheese",
+            "description": "Cheddar",
+            "price": 3,
+            "active": true
+          },
+          {
+            "id": 32,
+            "name": "Croissant - Chocolate",
+            "description": "Milk Chocolate",
+            "price": 3.5,
+            "active": true
+          }
+        ],
+        "active": true
+      }
+    ]
+  },
+  "flavors": {
+    "title": "Make It Yours",
+    "subtitle": "First flavor is complimentary! Additional flavors +$0.25",
+    "regular": [
+      "Salted Caramel",
+      "Caramel",
+      "Hazelnut",
+      "Vanilla",
+      "French Vanilla",
+      "Peppermint",
+      "Toasted Marshmallow",
+      "Raspberry",
+      "Blue Raspberry",
+      "Strawberry",
+      "Orange"
+    ],
+    "sugarFree": [
+      "Salted Caramel",
+      "Caramel",
+      "Vanilla",
+      "Toasted Marshmallow",
+      "Hazelnut"
+    ],
+    "extras": [
+      {
+        "name": "Cinnamon",
+        "price": 0
+      },
+      {
+        "name": "Brown Sugar",
+        "price": 0.25
+      },
+      {
+        "name": "Caramel Sauce",
+        "price": 0.25
+      },
+      {
+        "name": "Chocolate Sauce",
+        "price": 0.25
+      },
+      {
+        "name": "Honey",
+        "price": 0.25
+      },
+      {
+        "name": "Extra Espresso Shot",
+        "price": 0.5
+      }
+    ]
+  },
+  "perks": {
+    "title": "Rewards & Perks",
+    "items": [
+      {
+        "id": 1,
+        "title": "Punch Cards",
+        "description": "Earn your way to a free drink with our personalized punch cards",
+        "icon": "card"
+      },
+      {
+        "id": 2,
+        "title": "Birthday Perks",
+        "description": "Celebrate your special day with exclusive birthday treats",
+        "icon": "gift"
+      },
+      {
+        "id": 3,
+        "title": "Local Favorites",
+        "description": "Premium local additions to make your drink extra special",
+        "icon": "star"
+      }
+    ]
+  }
+}

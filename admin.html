@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Blacktop Brews</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-card">
+            <div class="login-logo">
+                <h1>Blacktop Brews</h1>
+                <p>Admin Dashboard</p>
+            </div>
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter admin password" required>
+                </div>
+                <div class="error-message" id="loginError"></div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div class="admin-dashboard" id="adminDashboard" style="display: none;">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-left">
+                <h1>Blacktop Brews</h1>
+                <span class="badge">Admin</span>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-outline btn-sm" id="deployBtn" title="Push changes to Unraid server">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14" style="margin-right: 5px;"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+                    Deploy to Server
+                </button>
+                <a href="/" class="btn btn-outline btn-sm">View Site</a>
+                <button class="btn btn-ghost btn-sm" id="logoutBtn">Logout</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Sidebar Navigation -->
+            <nav class="admin-nav">
+                <button class="nav-item active" data-tab="business">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/></svg>
+                    Business Info
+                </button>
+                <button class="nav-item" data-tab="appearance">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 5v14h16V5H4zm14 12H6V7h12v10zm-3.5-4.33l-2.5 3.01L10 12l-2.5 3.17L5 14.5l2 4.5h10l2-4.5-2.5-.83z"/></svg>
+                    Appearance
+                </button>
+                <button class="nav-item" data-tab="hours">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/></svg>
+                    Hours & Location
+                </button>
+                <button class="nav-item" data-tab="menu">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.1 13.34l2.83-2.83L3.91 3.5c-1.56 1.56-1.56 4.09 0 5.66l4.19 4.18zm6.78-1.81c1.53.71 3.68.21 5.27-1.38 1.91-1.91 2.28-4.65.81-6.12-1.46-1.46-4.20-1.10-6.12.81-1.59 1.59-2.09 3.74-1.38 5.27L3.7 19.87l1.41 1.41L12 14.41l6.88 6.88 1.41-1.41L13.41 13l1.47-1.47z"/></svg>
+                    Menu Items
+                </button>
+                <button class="nav-item" data-tab="flavors">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zm0 12.18L3.75 9.36 12 3.82l8.25 5.54L12 15.18zM12 21l-7-3.8V11l7 3.8 7-3.8v6.2L12 21z"/></svg>
+                    Flavors & Extras
+                </button>
+                <button class="nav-item" data-tab="perks">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                    Perks
+                </button>
+            </nav>
+
+            <!-- Content Area -->
+            <div class="admin-content">
+                <!-- Business Info Tab -->
+                <section class="tab-content active" id="tab-business">
+                    <div class="content-header">
+                        <h2>Business Information</h2>
+                        <p>Update your business details and contact information</p>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>General</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="businessName">Business Name</label>
+                                <input type="text" id="businessName" data-field="business.name">
+                            </div>
+                            <div class="form-group">
+                                <label for="businessTagline">Tagline</label>
+                                <input type="text" id="businessTagline" data-field="business.tagline">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="heroText">Hero Text</label>
+                            <input type="text" id="heroText" data-field="business.heroText">
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>About Section</h3>
+                        <div class="form-group">
+                            <label for="aboutTitle">Section Title</label>
+                            <input type="text" id="aboutTitle" data-field="business.aboutTitle">
+                        </div>
+                        <div class="form-group">
+                            <label for="aboutText1">Paragraph 1</label>
+                            <textarea id="aboutText1" rows="3" data-field="business.aboutText.0"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="aboutText2">Paragraph 2</label>
+                            <textarea id="aboutText2" rows="3" data-field="business.aboutText.1"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Contact</h3>
+                        <div class="form-group">
+                            <label for="email">Contact Email</label>
+                            <input type="email" id="email" data-field="business.email">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactTitle">Contact Section Title</label>
+                            <input type="text" id="contactTitle" data-field="business.contactTitle">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactText">Contact Text</label>
+                            <textarea id="contactText" rows="2" data-field="business.contactText"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Social Links</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="facebook">Facebook URL</label>
+                                <input type="url" id="facebook" data-field="business.socialLinks.facebook" placeholder="https://facebook.com/...">
+                            </div>
+                            <div class="form-group">
+                                <label for="instagram">Instagram URL</label>
+                                <input type="url" id="instagram" data-field="business.socialLinks.instagram" placeholder="https://instagram.com/...">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nextdoor">Nextdoor URL</label>
+                                <input type="url" id="nextdoor" data-field="business.socialLinks.nextdoor" placeholder="https://nextdoor.com/...">
+                            </div>
+                            <div class="form-group">
+                                <label for="googleMaps">Google Maps URL</label>
+                                <input type="url" id="googleMaps" data-field="business.socialLinks.googleMaps" placeholder="https://maps.app.goo.gl/...">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Appearance Tab -->
+                <section class="tab-content" id="tab-appearance">
+                    <div class="content-header">
+                        <h2>Appearance</h2>
+                        <p>Customize your logo and hero image gallery</p>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Logo</h3>
+                        <p style="color: var(--color-text-muted); font-size: 14px; margin-bottom: 20px;">Upload a logo image or leave blank to show text only. Recommended: 250x100 pixels (PNG or SVG with transparent background).</p>
+
+                        <div class="upload-option-tabs">
+                            <button type="button" class="upload-tab active" data-target="logoUpload">Upload File</button>
+                            <button type="button" class="upload-tab" data-target="logoUrl">Paste URL</button>
+                        </div>
+
+                        <div class="upload-panel active" id="logoUploadPanel">
+                            <div class="file-upload-area" id="logoUploadArea">
+                                <input type="file" id="logoFileInput" accept="image/*" class="file-input">
+                                <div class="upload-placeholder">
+                                    <svg viewBox="0 0 24 24" fill="currentColor" width="40" height="40"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+                                    <span>Click or drag to upload logo</span>
+                                    <small>PNG, JPG, SVG up to 10MB</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="upload-panel" id="logoUrlPanel">
+                            <div class="form-group">
+                                <label for="logoUrl">Logo Image URL</label>
+                                <input type="url" id="logoUrl" data-field="business.logo" placeholder="https://example.com/logo.png">
+                            </div>
+                        </div>
+
+                        <div class="logo-preview" id="logoPreview">
+                            <div class="preview-placeholder">
+                                <svg viewBox="0 0 24 24" fill="currentColor" width="40" height="40"><path d="M4 5v14h16V5H4zm14 12H6V7h12v10zm-3.5-4.33l-2.5 3.01L10 12l-2.5 3.17L5 14.5l2 4.5h10l2-4.5-2.5-.83z"/></svg>
+                                <span>Logo Preview</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h3>Hero Image Gallery</h3>
+                            <div class="header-actions">
+                                <button class="btn btn-sm btn-outline" id="uploadGalleryImages">
+                                    <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+                                    Upload Images
+                                </button>
+                                <button class="btn btn-sm btn-ghost" id="addGalleryImage">+ Add URL</button>
+                            </div>
+                        </div>
+                        <p style="color: var(--color-text-muted); font-size: 14px; margin-bottom: 20px;">Add images to display in the hero slideshow. Upload files directly or paste image URLs. Recommended: 1920x1080 pixels (Landscape, 16:9 ratio) for best quality.</p>
+
+                        <!-- Hidden file input for gallery uploads -->
+                        <input type="file" id="galleryFileInput" accept="image/*" multiple class="file-input" style="display: none;">
+
+                        <div class="gallery-settings">
+                            <label class="visibility-toggle">
+                                <input type="checkbox" id="autoSlideToggle">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-label">Auto-slide images</span>
+                            </label>
+                            <div class="form-group" style="max-width: 200px; margin-top: 15px;">
+                                <label for="slideInterval">Slide Interval (seconds)</label>
+                                <input type="number" id="slideInterval" min="2" max="30" value="5">
+                            </div>
+                        </div>
+
+                        <div class="gallery-images" id="galleryImages">
+                            <!-- Gallery images will be rendered here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Hours Tab -->
+                <section class="tab-content" id="tab-hours">
+                    <div class="content-header">
+                        <h2>Hours & Location</h2>
+                        <p>Update your weekly schedule and locations</p>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Section Settings</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="hoursTitle">Section Title</label>
+                                <input type="text" id="hoursTitle" data-field="business.hours.title">
+                            </div>
+                            <div class="form-group">
+                                <label for="hoursSubtitle">Subtitle</label>
+                                <input type="text" id="hoursSubtitle" data-field="business.hours.subtitle">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="location">Primary Location</label>
+                            <input type="text" id="location" data-field="business.location" placeholder="City, State">
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Weekly Schedule</h3>
+                        <p style="color: var(--color-text-muted); font-size: 14px; margin-bottom: 20px;">Set your operating hours for each day. Leave time empty and check "Closed" for days off.</p>
+                        <div class="hours-schedule" id="hoursSchedule">
+                            <!-- Schedule will be rendered here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Menu Tab -->
+                <section class="tab-content" id="tab-menu">
+                    <div class="content-header">
+                        <h2>Menu Items</h2>
+                        <p>Manage your menu categories and items</p>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Menu Settings</h3>
+                        <div class="form-group">
+                            <label for="menuTitle">Menu Title</label>
+                            <input type="text" id="menuTitle" data-field="menu.title">
+                        </div>
+                        <div class="form-group">
+                            <label for="menuSubtitle">Menu Subtitle</label>
+                            <input type="text" id="menuSubtitle" data-field="menu.subtitle">
+                        </div>
+                    </div>
+
+                    <div class="menu-manager" id="menuManager">
+                        <!-- Categories will be rendered here -->
+                    </div>
+
+                    <button class="btn btn-outline" id="addCategoryBtn">
+                        <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                        Add Category
+                    </button>
+                </section>
+
+                <!-- Flavors Tab -->
+                <section class="tab-content" id="tab-flavors">
+                    <div class="content-header">
+                        <h2>Flavors & Extras</h2>
+                        <p>Manage flavor options and add-ons</p>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Section Settings</h3>
+                        <div class="form-group">
+                            <label for="flavorsTitle">Section Title</label>
+                            <input type="text" id="flavorsTitle" data-field="flavors.title">
+                        </div>
+                        <div class="form-group">
+                            <label for="flavorsSubtitle">Subtitle</label>
+                            <input type="text" id="flavorsSubtitle" data-field="flavors.subtitle">
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h3>Regular Flavors</h3>
+                            <button class="btn btn-sm btn-ghost" id="addRegularFlavor">+ Add</button>
+                        </div>
+                        <div class="tag-list" id="regularFlavors">
+                            <!-- Tags rendered here -->
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h3>Sugar-Free Flavors</h3>
+                            <button class="btn btn-sm btn-ghost" id="addSugarFreeFlavor">+ Add</button>
+                        </div>
+                        <div class="tag-list" id="sugarFreeFlavors">
+                            <!-- Tags rendered here -->
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h3>Extras</h3>
+                            <button class="btn btn-sm btn-ghost" id="addExtra">+ Add</button>
+                        </div>
+                        <div class="extras-list" id="extrasList">
+                            <!-- Extras rendered here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Perks Tab -->
+                <section class="tab-content" id="tab-perks">
+                    <div class="content-header">
+                        <h2>Rewards & Perks</h2>
+                        <p>Manage your rewards program information</p>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Section Settings</h3>
+                        <div class="form-group">
+                            <label for="perksTitle">Section Title</label>
+                            <input type="text" id="perksTitle" data-field="perks.title">
+                        </div>
+                    </div>
+
+                    <div class="perks-manager" id="perksManager">
+                        <!-- Perks will be rendered here -->
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Save Bar -->
+        <div class="save-bar" id="saveBar">
+            <div class="save-bar-content">
+                <span class="unsaved-indicator">You have unsaved changes</span>
+                <div class="save-actions">
+                    <button class="btn btn-ghost" id="discardBtn">Discard</button>
+                    <button class="btn btn-primary" id="saveBtn">Save Changes</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notifications -->
+        <div class="toast-container" id="toastContainer"></div>
+    </div>
+
+    <!-- Modal Template -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">Modal Title</h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Modal content -->
+            </div>
+            <div class="modal-footer" id="modalFooter">
+                <button class="btn btn-ghost" id="modalCancel">Cancel</button>
+                <button class="btn btn-primary" id="modalConfirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

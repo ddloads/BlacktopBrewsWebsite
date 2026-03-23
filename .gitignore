@@ -1,0 +1,19 @@
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.env
+.idea/
+.claude/
+.gemini/
+
+# Data and Backups
+data/site-data-backup-*.json
+
+# Uploads (except placeholder/default logo if needed)
+# uploads/*
+# !uploads/logo.png
+
+# OS files
+.DS_Store
+Thumbs.db

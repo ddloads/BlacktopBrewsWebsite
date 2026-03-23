@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blacktop Brews | Mobile Coffee Trailer</title>
+    <meta name="description" content="Blacktop Brews - Your favorite mobile coffee trailer. Mix & match flavors to create your perfect drink!">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo" id="siteLogo">
+                <img src="" alt="Blacktop Brews" class="logo-img" id="logoImg" style="display: none;">
+                <span class="logo-text" data-content="business.name">Blacktop Brews</span>
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#hours" class="nav-link">Hours</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#menu" class="nav-link">Menu</a></li>
+                <li><a href="#customize" class="nav-link">Customize</a></li>
+                <li><a href="#contact" class="nav-link">Find Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Gallery -->
+    <section class="hero" id="home">
+        <div class="hero-gallery" id="heroGallery">
+            <div class="gallery-slides" id="gallerySlides">
+                <!-- Slides will be populated dynamically -->
+                <div class="gallery-slide active" style="background: linear-gradient(135deg, var(--color-primary-dark), var(--color-background));">
+                    <div class="slide-placeholder">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="80" height="80"><path d="M4 5v14h16V5H4zm14 12H6V7h12v10zm-3.5-4.33l-2.5 3.01L10 12l-2.5 3.17L5 14.5l2 4.5h10l2-4.5-2.5-.83z"/></svg>
+                        <p>Add images in the admin panel</p>
+                    </div>
+                </div>
+            </div>
+            <div class="gallery-nav" id="galleryNav">
+                <!-- Navigation dots will be added dynamically -->
+            </div>
+            <button class="gallery-arrow gallery-prev" id="galleryPrev" aria-label="Previous image">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            </button>
+            <button class="gallery-arrow gallery-next" id="galleryNext" aria-label="Next image">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </button>
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+
+            <p class="hero-subtitle" data-content="business.tagline">Mobile Coffee Trailer</p>
+            <p class="hero-tagline" data-content="business.heroText">Mix & match flavors and extras to create your perfect drink!</p>
+            <a href="#menu" class="btn btn-primary">View Our Menu</a>
+        </div>
+        <div class="scroll-indicator">
+            <span></span>
+        </div>
+    </section>
+
+    <!-- Hours Hero Section -->
+    <section class="hours-hero" id="hours">
+        <div class="container">
+            <h2 class="section-title" data-content="hours.title">Find Us This Week</h2>
+            <p class="section-subtitle" data-content="hours.subtitle">Serving fresh coffee at these locations</p>
+
+            <div class="hours-grid" id="hoursGrid">
+                <div class="hours-card">
+                    <div class="hours-day">Monday</div>
+                    <div class="hours-time">7:00 AM - 2:00 PM</div>
+                    <div class="hours-location">Downtown Jackson</div>
+                </div>
+                <div class="hours-card">
+                    <div class="hours-day">Tuesday</div>
+                    <div class="hours-time">7:00 AM - 2:00 PM</div>
+                    <div class="hours-location">Farmers Market</div>
+                </div>
+                <div class="hours-card">
+                    <div class="hours-day">Wednesday</div>
+                    <div class="hours-time">7:00 AM - 2:00 PM</div>
+                    <div class="hours-location">Downtown Jackson</div>
+                </div>
+                <div class="hours-card">
+                    <div class="hours-day">Thursday</div>
+                    <div class="hours-time">7:00 AM - 2:00 PM</div>
+                    <div class="hours-location">Downtown Jackson</div>
+                </div>
+                <div class="hours-card">
+                    <div class="hours-day">Friday</div>
+                    <div class="hours-time">7:00 AM - 3:00 PM</div>
+                    <div class="hours-location">Downtown Jackson</div>
+                </div>
+                <div class="hours-card">
+                    <div class="hours-day">Saturday</div>
+                    <div class="hours-time">8:00 AM - 2:00 PM</div>
+                    <div class="hours-location">Weekend Market</div>
+                </div>
+                <div class="hours-card closed">
+                    <div class="hours-day">Sunday</div>
+                    <div class="hours-time">Closed</div>
+                    <div class="hours-location">See you Monday!</div>
+                </div>
+            </div>
+
+            <a href="https://maps.app.goo.gl/6eckD6wRHRZmE78p6" class="btn btn-primary hours-btn" target="_blank" rel="noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                Get Directions
+            </a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2 class="section-title" data-content="business.aboutTitle">Crafted With Care</h2>
+                    <div data-content="business.aboutText">
+                        <p>Welcome to Blacktop Brews, where every cup tells a story. As a mobile coffee trailer, we bring the cafe experience directly to you - whether you're at a local event, farmers market, or private gathering.</p>
+                        <p>We believe coffee should be personal. That's why we offer endless customization options, from signature lattes to unique flavor combinations. Your perfect drink is just a visit away.</p>
+                    </div>
+                    <div class="features">
+                        <div class="feature">
+                            <div class="feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21V19H22V21H2ZM20 8V5H22V8H20ZM20 14V11H22V14H20ZM18 17H2V7C2 5.89543 2.89543 5 4 5H16C17.1046 5 18 5.89543 18 7V17ZM4 7V15H16V7H4Z"/></svg>
+                            </div>
+                            <h3>Premium Beans</h3>
+                            <p>Quality coffee sourced from the finest roasters</p>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM13 12H17V14H11V7H13V12Z"/></svg>
+                            </div>
+                            <h3>Made Fresh</h3>
+                            <p>Every drink crafted to order, just for you</p>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 10.8284L16.9497 5.87868L18.364 7.29289L13.4142 12.2426L18.364 17.1924L16.9497 18.6066L12 13.6569L7.05025 18.6066L5.63604 17.1924L10.5858 12.2426L5.63604 7.29289L7.05025 5.87868L12 10.8284Z"/></svg>
+                            </div>
+                            <h3>Fully Customizable</h3>
+                            <p>Endless flavor combinations to explore</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="menu" id="menu">
+        <div class="container">
+            <h2 class="section-title" data-content="menu.title">Our Menu</h2>
+            <p class="section-subtitle" data-content="menu.subtitle">From classic drip to signature lattes, we've got your caffeine fix covered</p>
+
+            <div class="menu-grid">
+                <!-- Coffee -->
+                <div class="menu-category">
+                    <div class="category-header">
+                        <h3>Coffee</h3>
+                    </div>
+                    <div class="menu-items">
+                        <div class="menu-item">
+                            <div class="item-info">
+                                <span class="item-name">Drip Coffee</span>
+                                <span class="item-desc">Fresh brewed daily</span>
+                            </div>
+                            <span class="item-price">$2.50</span>
+                        </div>
+                        <div class="menu-item">
+                            <div class="item-info">
+                                <span class="item-name">Decaf</span>
+                                <span class="item-desc">All the flavor, none of the buzz</span>
+                            </div>
+                            <span class="item-price">$2.75</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Espresso -->
+                <div class="menu-category">
+                    <div class="category-header">
+                        <h3>Espresso Drinks</h3>
+                    </div>
+                    <div class="menu-items">
+                        <div class="menu-item">
+                            <div class="item-info">
+                                <span class="item-name">Americano</span>
+                                <span class="item-desc">Espresso with hot water</span>
+                            </div>
+                            <span class="item-price">$3.00</span>
+                        </div>
+                        <div class="menu-item">
+                            <div class="item-info">
+                                <span class="item-name">Basic Latte</span>
+                                <span class="item-desc">Espresso with steamed milk</span>
+                            </div>
+                            <span class="item-price">$3.25</span>
+                        </div>
+                        <div class="menu-item">
+                            <div class="item-info">
+                                <span class="item-name">Signature Lattes</span>
+                                <span class="item-desc">Our house specialties</span>
+                            </div>
+                            <span class="item-price">$3.50</span>
+                        </div>
+                        <div class="menu-item">
+                            <div class="item-info">
+                                <span class="item-name">Seasonal Lattes</span>
+                                <span class="item-desc">Limited time offerings</span>
+                            </div>
+                            <span class="item-price">$3.75</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Non-Coffee -->
+                <div class="menu-category">
+                    <div class="category-header">
+                        <h3>Non-Coffee</h3>
+                    </div>
+                    <div class="menu-items">
+                        <div class="menu-item">
+                            <div class="item-info">
+                                <span class="item-name">Hot Chocolate</span>
+                                <span class="item-desc">Rich & creamy</span>
+                            </div>
+                            <span class="item-price">$2.75</span>
+                        </div>
+                        <div class="menu-item">
+                            <div class="item-info">
+                                <span class="item-name">Spiced Apple Cider</span>
+                                <span class="item-desc">Warm & comforting</span>
+                            </div>
+                            <span class="item-price">$2.50</span>
+                        </div>
+                        <div class="menu-item">
+                            <div class="item-info">
+                                <span class="item-name">Spritzer</span>
+                                <span class="item-desc">Refreshingly light</span>
+                            </div>
+                            <span class="item-price">$2.25</span>
+                        </div>
+                        <div class="menu-item">
+                            <div class="item-info">
+                                <span class="item-name">Steamer</span>
+                                <span class="item-desc">Steamed milk with flavor</span>
+                            </div>
+                            <span class="item-price">$3.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Customize Section -->
+    <section class="customize" id="customize">
+        <div class="container">
+            <h2 class="section-title" data-content="flavors.title">Make It Yours</h2>
+            <p class="section-subtitle" data-content="flavors.subtitle">First flavor is complimentary! Additional flavors +$0.25</p>
+
+            <div class="customize-grid">
+                <div class="customize-card">
+                    <h3>Regular Flavors</h3>
+                    <ul class="flavor-list" data-content="flavors.regular">
+                        <li>Salted Caramel</li>
+                        <li>Caramel</li>
+                        <li>French Vanilla</li>
+                        <li>Hazelnut</li>
+                        <li>Pistachio</li>
+                        <li>Raspberry</li>
+                        <li>& More!</li>
+                    </ul>
+                </div>
+
+                <div class="customize-card">
+                    <h3>Sugar-Free Options</h3>
+                    <ul class="flavor-list" data-content="flavors.sugarFree">
+                        <li>Sugar-Free Vanilla</li>
+                        <li>Sugar-Free Caramel</li>
+                        <li>Sugar-Free Hazelnut</li>
+                        <li>Sugar-Free Mocha</li>
+                    </ul>
+                </div>
+
+                <div class="customize-card">
+                    <h3>Extras</h3>
+                    <ul class="flavor-list extras" data-content="flavors.extras">
+                        <li><span>Cinnamon</span><span class="extra-price">Free</span></li>
+                        <li><span>Pumpkin Spice</span><span class="extra-price">+$0.25</span></li>
+                        <li><span>Brown Sugar</span><span class="extra-price">+$0.25</span></li>
+                        <li><span>Caramel Sauce</span><span class="extra-price">+$0.25</span></li>
+                        <li><span>Chocolate Sauce</span><span class="extra-price">+$0.25</span></li>
+                        <li><span>Honey</span><span class="extra-price">+$0.25</span></li>
+                        <li><span>Edible Glitter</span><span class="extra-price">+$0.25</span></li>
+                        <li><span>Extra Espresso Shot</span><span class="extra-price">+$0.50</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Perks Section -->
+    <section class="perks">
+        <div class="container">
+            <div class="perks-content">
+                <h2 class="section-title" data-content="perks.title">Rewards & Perks</h2>
+                <div class="perks-grid">
+                    <div class="perk-card">
+                        <div class="perk-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M22 10H20V7H22V10ZM22 13H20V16H22V13ZM17 4H7C5.34315 4 4 5.34315 4 7V17C4 18.6569 5.34315 20 7 20H17C18.6569 20 20 18.6569 20 17V7C20 5.34315 18.6569 4 17 4ZM7 2H17C19.7614 2 22 4.23858 22 7V17C22 19.7614 19.7614 22 17 22H7C4.23858 22 2 19.7614 2 17V7C2 4.23858 4.23858 2 7 2ZM9 10H11V12H9V10ZM13 10H15V12H13V10ZM9 14H11V16H9V14ZM13 14H15V16H13V14Z"/></svg>
+                        </div>
+                        <h3>Punch Cards</h3>
+                        <p>Earn your way to a free drink with our personalized punch cards</p>
+                    </div>
+                    <div class="perk-card">
+                        <div class="perk-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 2C18.5376 2 21 4.46243 21 7.5C21 9.36016 20.0817 11.0075 18.6685 12H22V22H2V12H5.33152C3.91828 11.0075 3 9.36016 3 7.5C3 4.46243 5.46243 2 8.5 2C10.2147 2 11.7479 2.81018 12.7466 4.07441L12 4.87012L11.2534 4.07441C12.2521 2.81018 13.7853 2 15.5 2ZM20 14H4V20H20V14ZM11 14H13V17H16V19H13V17H11V19H8V17H11V14ZM8.5 4C6.567 4 5 5.567 5 7.5C5 9.20008 6.20893 10.6209 7.81026 10.9269L8.58749 11.0654L9.07998 11.6944L11 14.1424V12H13V14.1424L14.92 11.6944L15.4125 11.0654L16.1897 10.9269C17.7911 10.6209 19 9.20008 19 7.5C19 5.567 17.433 4 15.5 4C14.2119 4 13.0864 4.70549 12.4993 5.74635L12 6.64L11.5007 5.74635C10.9136 4.70549 9.78807 4 8.5 4Z"/></svg>
+                        </div>
+                        <h3>Birthday Perks</h3>
+                        <p>Celebrate your special day with exclusive birthday treats</p>
+                    </div>
+                    <div class="perk-card">
+                        <div class="perk-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L21.5 6.5V17.5L12 23L2.5 17.5V6.5L12 1ZM12 3.311L4.5 7.65311V16.3469L12 20.689L19.5 16.3469V7.65311L12 3.311ZM12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12C16 14.2091 14.2091 16 12 16ZM12 14C13.1046 14 14 13.1046 14 12C14 10.8954 13.1046 10 12 10C10.8954 10 10 10.8954 10 12C10 13.1046 10.8954 14 12 14Z"/></svg>
+                        </div>
+                        <h3>Local Favorites</h3>
+                        <p>Premium local additions to make your drink extra special</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2 class="section-title">Find Us</h2>
+            <p class="section-subtitle">Bringing delicious coffee to events near you</p>
+
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-card">
+                        <h3 data-content="business.contactTitle">Book Us For Your Event</h3>
+                        <p data-content="business.contactText">Planning a wedding, corporate event, farmers market, or private party? We'd love to serve your guests!</p>
+                        <a href="mailto:hello@blacktopbrews.com" class="btn btn-outline" data-content="business.email">Get In Touch</a>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/people/Blacktop-Brews/61579886220123/" class="social-link" aria-label="Facebook" data-social="facebook" target="_blank" rel="noopener">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M14 13.5H16.5L17.5 9.5H14V7.5C14 6.47062 14 5.5 16 5.5H17.5V2.1401C17.1743 2.09685 15.943 2 14.6429 2C11.9284 2 10 3.65686 10 6.69971V9.5H7V13.5H10V22H14V13.5Z"/></svg>
+                        </a>
+                        <a href="https://www.instagram.com/blacktop_brews/" class="social-link" aria-label="Instagram" data-social="instagram" target="_blank" rel="noopener">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c2.717 0 3.056.01 4.122.06 1.065.05 1.79.217 2.428.465.66.254 1.216.598 1.772 1.153a4.908 4.908 0 0 1 1.153 1.772c.247.637.415 1.363.465 2.428.047 1.066.06 1.405.06 4.122 0 2.717-.01 3.056-.06 4.122-.05 1.065-.218 1.79-.465 2.428a4.883 4.883 0 0 1-1.153 1.772 4.915 4.915 0 0 1-1.772 1.153c-.637.247-1.363.415-2.428.465-1.066.047-1.405.06-4.122.06-2.717 0-3.056-.01-4.122-.06-1.065-.05-1.79-.218-2.428-.465a4.89 4.89 0 0 1-1.772-1.153 4.904 4.904 0 0 1-1.153-1.772c-.248-.637-.415-1.363-.465-2.428C2.013 15.056 2 14.717 2 12c0-2.717.01-3.056.06-4.122.05-1.066.217-1.79.465-2.428a4.88 4.88 0 0 1 1.153-1.772A4.897 4.897 0 0 1 5.45 2.525c.638-.248 1.362-.415 2.428-.465C8.944 2.013 9.283 2 12 2zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6.5-.25a1.25 1.25 0 0 0-2.5 0 1.25 1.25 0 0 0 2.5 0zM12 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/></svg>
+                        </a>
+                        <a href="https://nextdoor.com/pages/blacktop-brews-jackson-mi/" class="social-link" aria-label="Nextdoor" data-social="nextdoor" target="_blank" rel="noopener">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                        </a>
+                        <a href="https://maps.app.goo.gl/6eckD6wRHRZmE78p6" class="social-link" aria-label="Google Maps" data-social="googleMaps" target="_blank" rel="noopener">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <span data-content="business.name">Blacktop Brews</span>
+                    <p data-content="business.tagline">Mobile Coffee Trailer</p>
+                </div>
+                <p class="copyright">&copy; 2026 Blacktop Brews. All rights reserved. <a href="/admin.html" class="footer-admin-link">Admin</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
