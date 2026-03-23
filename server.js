@@ -106,7 +106,38 @@ function requireAuth(req, res, next) {
 }
 
 // Data file path
-const DATA_FILE = path.join(__dirname, 'data', 'site-data.json');
+const DATA_FILE = path.join(DATA_DIR, 'site-data.json');
+
+// Default data template
+const DEFAULT_DATA = {
+    business: {
+        name: "Blacktop Brews",
+        tagline: "Mobile Coffee Trailer",
+        heroText: "Mix & match flavors to create your perfect drink!",
+        email: "hello@blacktopbrews.com",
+        location: "Your Location",
+        hours: { title: "Find Us", subtitle: "Our weekly schedule", schedule: [] },
+        aboutTitle: "Our Story",
+        aboutText: ["Welcome to Blacktop Brews."],
+        contactTitle: "Get In Touch",
+        contactText: "We would love to hear from you!",
+        socialLinks: { facebook: "", instagram: "", nextdoor: "", googleMaps: "" }
+    },
+    menu: { title: "Our Menu", subtitle: "Crafted for you", categories: [] },
+    flavors: { title: "Flavors", subtitle: "Customize your drink", regular: [], sugarFree: [], extras: [] },
+    perks: { title: "Rewards", items: [] },
+    heroGallery: { images: [], autoSlide: true, slideInterval: 5000 }
+};
+
+// Ensure site-data.json exists
+if (!fs.existsSync(DATA_FILE)) {
+    console.log('Site data file missing. Initializing with default data...');
+    try {
+        fs.writeFileSync(DATA_FILE, JSON.stringify(DEFAULT_DATA, null, 2));
+    } catch (err) {
+        console.error('Failed to initialize site data:', err);
+    }
+}
 
 // Helper functions
 function readData() {
