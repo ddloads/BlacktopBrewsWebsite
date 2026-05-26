@@ -940,6 +940,130 @@ function renderFlavors() {
     bindFlavorListeners();
 }
 
+// ===== Flavors Import / Export =====
+function exportFlavors() {
+    try {
+        const flavorsJson = JSON.stringify(siteData.flavors, null, 2);
+        const blob = new Blob([flavorsJson], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+
+        const date = new Date().toISOString().split('T')[0];
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `blacktop-brews-flavors-${date}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        showToast('Flavors exported', 'success');
+    } catch (error) {
+        console.error('Export error:', error);
+        showToast('Failed to export flavors', 'error');
+    }
+}
+
+// Validate an imported flavors object. Returns { ok: true, flavors } or
+// { ok: false, error }.
+function validateImportedFlavors(raw) {
+    if (!raw || typeof raw !== 'object') {
+        return { ok: false, error: 'File is not a valid JSON object.' };
+    }
+
+    // Accept either a flavors-shaped object or a full site-data with a .flavors key.
+    const flavors = (raw.regular || raw.sugarFree || raw.extras) ? raw : raw.flavors;
+    if (!flavors || typeof flavors !== 'object') {
+        return { ok: false, error: 'JSON does not contain a flavors section.' };
+    }
+
+    const regular = flavors.regular || [];
+    const sugarFree = flavors.sugarFree || [];
+    const extras = flavors.extras || [];
+
+    if (!Array.isArray(regular)) {
+        return { ok: false, error: '"regular" must be an array of flavor names.' };
+    }
+    if (!Array.isArray(sugarFree)) {
+        return { ok: false, error: '"sugarFree" must be an array of flavor names.' };
+    }
+    if (!Array.isArray(extras)) {
+        return { ok: false, error: '"extras" must be an array.' };
+    }
+
+    for (let i = 0; i < regular.length; i++) {
+        if (typeof regular[i] !== 'string' || !regular[i].trim()) {
+            return { ok: false, error: `Regular flavor at index ${i} is not a non-empty string.` };
+        }
+    }
+    for (let i = 0; i < sugarFree.length; i++) {
+        if (typeof sugarFree[i] !== 'string' || !sugarFree[i].trim()) {
+            return { ok: false, error: `Sugar-free flavor at index ${i} is not a non-empty string.` };
+        }
+    }
+    for (let i = 0; i < extras.length; i++) {
+        const ex = extras[i];
+        if (!ex || typeof ex !== 'object') {
+            return { ok: false, error: `Extra at index ${i} is not an object.` };
+        }
+        if (typeof ex.name !== 'string' || !ex.name.trim()) {
+            return { ok: false, error: `Extra at index ${i} is missing a name.` };
+        }
+        if (typeof ex.price !== 'number' || isNaN(ex.price)) {
+            return { ok: false, error: `Extra "${ex.name}" has an invalid price.` };
+        }
+    }
+
+    return {
+        ok: true,
+        flavors: {
+            title: typeof flavors.title === 'string' ? flavors.title : (siteData.flavors.title || ''),
+            subtitle: typeof flavors.subtitle === 'string' ? flavors.subtitle : (siteData.flavors.subtitle || ''),
+            regular,
+            sugarFree,
+            extras
+        }
+    };
+}
+
+function handleFlavorsImportFile(file) {
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        let parsed;
+        try {
+            parsed = JSON.parse(e.target.result);
+        } catch (err) {
+            showToast('Invalid JSON: ' + err.message, 'error');
+            return;
+        }
+
+        const result = validateImportedFlavors(parsed);
+        if (!result.ok) {
+            showToast(result.error, 'error');
+            return;
+        }
+
+        const regCount = result.flavors.regular.length;
+        const sfCount = result.flavors.sugarFree.length;
+        const exCount = result.flavors.extras.length;
+        const message = `This will replace the current flavors with ${regCount} regular, ` +
+            `${sfCount} sugar-free, and ${exCount} extra${exCount === 1 ? '' : 's'}. ` +
+            `Changes won't be saved to the server until you click Save Changes.`;
+
+        showConfirmModal('Import Flavors', message, () => {
+            siteData.flavors = result.flavors;
+            renderFlavors();
+            markAsChanged();
+            showToast(`Imported ${regCount + sfCount} flavors, ${exCount} extras`, 'success');
+        });
+    };
+    reader.onerror = () => {
+        showToast('Failed to read file', 'error');
+    };
+    reader.readAsText(file);
+}
+
 function renderPerks() {
     setFieldValue('perksTitle', siteData.perks.title);
 
@@ -1188,6 +1312,18 @@ document.getElementById('importMenuBtn').addEventListener('click', () => {
 });
 importMenuFileInput.addEventListener('change', (e) => {
     handleMenuImportFile(e.target.files[0]);
+});
+
+// Flavors import / export
+document.getElementById('exportFlavorsBtn').addEventListener('click', exportFlavors);
+
+const importFlavorsFileInput = document.getElementById('importFlavorsFileInput');
+document.getElementById('importFlavorsBtn').addEventListener('click', () => {
+    importFlavorsFileInput.value = '';
+    importFlavorsFileInput.click();
+});
+importFlavorsFileInput.addEventListener('change', (e) => {
+    handleFlavorsImportFile(e.target.files[0]);
 });
 
 document.getElementById('addRegularFlavor').addEventListener('click', () => {
