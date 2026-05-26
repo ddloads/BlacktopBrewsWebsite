@@ -41,7 +41,7 @@ A modern, dynamic website for **Blacktop Brews**, a mobile coffee trailer. This 
    ```
 - The server runs on `http://localhost:3000` by default.
 - **Admin Access:** Navigate to `http://localhost:3000/admin.html`.
-- **Default Admin Password:** `blacktopbrews2026` (Configurable via `ADMIN_PASSWORD` environment variable).
+- **Admin Password:** Set via the `ADMIN_PASSWORD` environment variable (required, min 8 chars). `SESSION_SECRET` is also required (min 16 chars). The server will refuse to start if either is missing.
 
 ## Project Structure
 

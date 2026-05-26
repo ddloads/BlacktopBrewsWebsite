@@ -554,35 +554,10 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// ===== Admin Access =====
-async function checkAuthAndShowAdminLink() {
-    try {
-        const response = await fetch('/api/auth-status');
-        if (response.ok) {
-            const data = await response.json();
-            if (data.authenticated) {
-                const navMenu = document.getElementById('navMenu');
-                if (navMenu && !document.getElementById('adminNavLink')) {
-                    const li = document.createElement('li');
-                    li.id = 'adminNavLink';
-                    li.innerHTML = '<a href="/admin.html" class="nav-link admin-link">Admin Dashboard</a>';
-                    navMenu.appendChild(li);
-                }
-            }
-        }
-    } catch (error) {
-        // Silently fail, we don't want to alert users
-        console.log('Auth check skipped');
-    }
-}
-
 // ===== Initialize =====
 document.addEventListener('DOMContentLoaded', () => {
     // Load dynamic data
     loadSiteData();
-
-    // Check if admin is logged in
-    checkAuthAndShowAdminLink();
 
     // Initialize static animations (will be re-run after data loads)
     initAnimations();

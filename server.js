@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
@@ -49,8 +51,20 @@ const upload = multer({
     }
 });
 
-// Admin password - change this or set via environment variable
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'blacktopbrews2026';
+// Admin password and session secret must be supplied via environment variables.
+// Refuse to start if either is missing — never fall back to a baked-in default.
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+const SESSION_SECRET = process.env.SESSION_SECRET;
+
+if (!ADMIN_PASSWORD || ADMIN_PASSWORD.length < 8) {
+    console.error('FATAL: ADMIN_PASSWORD environment variable is required and must be at least 8 characters.');
+    process.exit(1);
+}
+
+if (!SESSION_SECRET || SESSION_SECRET.length < 16) {
+    console.error('FATAL: SESSION_SECRET environment variable is required and must be at least 16 characters.');
+    process.exit(1);
+}
 
 // Middleware
 app.use(cors());
@@ -58,11 +72,13 @@ app.use(express.json());
 app.use(express.static(__dirname));
 
 app.use(session({
-    secret: process.env.SESSION_SECRET || 'blacktop-brews-secret-key-change-me',
+    secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: false, // Set to true if using HTTPS
+        secure: process.env.NODE_ENV === 'production',
+        httpOnly: true,
+        sameSite: 'lax',
         maxAge: 24 * 60 * 60 * 1000 // 24 hours
     }
 }));
@@ -201,8 +217,12 @@ app.post('/api/login', (req, res) => {
     }
 
     const { password } = req.body;
+    const provided = Buffer.from(typeof password === 'string' ? password : '');
+    const expected = Buffer.from(ADMIN_PASSWORD);
+    const crypto = require('crypto');
+    const valid = provided.length === expected.length && crypto.timingSafeEqual(provided, expected);
 
-    if (password === ADMIN_PASSWORD) {
+    if (valid) {
         recordLoginAttempt(ip, true);
         req.session.authenticated = true;
         res.json({ success: true });
@@ -455,33 +475,6 @@ app.get('/api/uploads', requireAuth, (req, res) => {
     }
 });
 
-// Deploy to remote server (protected)
-app.post('/api/deploy', requireAuth, (req, res) => {
-    const { exec } = require('child_process');
-    const scriptPath = path.join(__dirname, 'deploy.ps1');
-
-    console.log('Starting deployment...');
-
-    // Run the powershell script
-    exec(`powershell.exe -ExecutionPolicy Bypass -File "${scriptPath}"`, (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Deployment error: ${error}`);
-            return res.status(500).json({
-                success: false,
-                error: 'Deployment failed',
-                details: stderr || error.message
-            });
-        }
-
-        console.log(`Deployment output: ${stdout}`);
-        res.json({
-            success: true,
-            message: 'Deployment completed successfully',
-            output: stdout
-        });
-    });
-});
-
 // Serve uploaded files
 app.use('/uploads', express.static(UPLOADS_DIR));
 
@@ -512,9 +505,6 @@ app.listen(PORT, () => {
 ║                                                           ║
 ║   Website:  http://localhost:${PORT}                        ║
 ║   Admin:    http://localhost:${PORT}/admin.html             ║
-║                                                           ║
-║   Default password: blacktopbrews2026                     ║
-║   (Change via ADMIN_PASSWORD environment variable)        ║
 ║                                                           ║
 ╚═══════════════════════════════════════════════════════════╝
     `);

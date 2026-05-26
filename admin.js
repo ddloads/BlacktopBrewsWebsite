@@ -9,7 +9,6 @@ const adminDashboard = document.getElementById('adminDashboard');
 const loginForm = document.getElementById('loginForm');
 const loginError = document.getElementById('loginError');
 const logoutBtn = document.getElementById('logoutBtn');
-const deployBtn = document.getElementById('deployBtn');
 const saveBar = document.getElementById('saveBar');
 const saveBtn = document.getElementById('saveBtn');
 const discardBtn = document.getElementById('discardBtn');
@@ -61,38 +60,6 @@ async function logout() {
     adminDashboard.style.display = 'none';
     siteData = null;
     originalData = null;
-}
-
-async function deployToServer() {
-    if (hasUnsavedChanges) {
-        showToast('Please save your changes before deploying', 'warning');
-        return;
-    }
-
-    const originalContent = deployBtn.innerHTML;
-    deployBtn.innerHTML = `
-        <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14" class="spin" style="margin-right: 5px;"><path d="M12 4V2A10 10 0 0 0 2 12h2a8 8 0 0 1 8-8z"/></svg>
-        Deploying...
-    `;
-    deployBtn.disabled = true;
-
-    try {
-        const response = await fetch('/api/deploy', { method: 'POST' });
-        const result = await response.json();
-
-        if (result.success) {
-            showToast('Deployment successful! You may need to refresh the live site with Ctrl+F5 to clear cache.', 'success');
-        } else {
-            showToast('Deployment failed: ' + (result.error || 'Unknown error'), 'error');
-            console.error('Deployment details:', result.details);
-        }
-    } catch (error) {
-        showToast('Connection error during deployment', 'error');
-        console.error('Fetch error:', error);
-    } finally {
-        deployBtn.innerHTML = originalContent;
-        deployBtn.disabled = false;
-    }
 }
 
 function showDashboard() {
@@ -1238,14 +1205,6 @@ logoutBtn.addEventListener('click', () => {
     } else {
         logout();
     }
-});
-
-deployBtn.addEventListener('click', () => {
-    showConfirmModal(
-        'Deploy to Server',
-        'This will push all current saved data and files to the remote Unraid server. Are you sure you want to continue?',
-        deployToServer
-    );
 });
 
 saveBtn.addEventListener('click', saveData);

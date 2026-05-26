@@ -12,6 +12,6 @@ services:
     environment:
       - PORT=3000
       - NODE_ENV=production
-      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-blacktopbrews2026}
-      - SESSION_SECRET=${SESSION_SECRET:-blacktop-brews-secret-key-change-me}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:?ADMIN_PASSWORD must be set in environment or .env file}
+      - SESSION_SECRET=${SESSION_SECRET:?SESSION_SECRET must be set in environment or .env file}
     restart: always

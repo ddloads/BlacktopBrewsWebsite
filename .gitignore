@@ -6,6 +6,7 @@ yarn-error.log*
 .idea/
 .claude/
 .gemini/
+.sync/
 
 # Data and Backups
 data/site-data-backup-*.json
