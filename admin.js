@@ -1068,17 +1068,32 @@ function renderPerks() {
     setFieldValue('perksTitle', siteData.perks.title);
 
     const perksManager = document.getElementById('perksManager');
+    const iconOptions = ['card', 'gift', 'star'];
     perksManager.innerHTML = siteData.perks.items.map((perk, index) => `
         <div class="perk-card-edit" data-index="${index}">
+            <div class="perk-card-header">
+                <span class="perk-card-label">Perk ${index + 1}</span>
+                <button class="delete-btn delete-perk-btn" title="Delete perk">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                </button>
+            </div>
             <div class="form-row">
                 <div class="form-group">
                     <label>Title</label>
-                    <input type="text" value="${perk.title}" class="perk-title-input">
+                    <input type="text" value="${perk.title || ''}" class="perk-title-input">
+                </div>
+                <div class="form-group">
+                    <label>Icon</label>
+                    <select class="perk-icon-input">
+                        ${iconOptions.map(opt => `
+                            <option value="${opt}" ${perk.icon === opt ? 'selected' : ''}>${opt.charAt(0).toUpperCase() + opt.slice(1)}</option>
+                        `).join('')}
+                    </select>
                 </div>
             </div>
             <div class="form-group">
                 <label>Description</label>
-                <textarea rows="2" class="perk-desc-input">${perk.description}</textarea>
+                <textarea rows="2" class="perk-desc-input">${perk.description || ''}</textarea>
             </div>
         </div>
     `).join('');
@@ -1280,6 +1295,20 @@ function bindPerkListeners() {
             siteData.perks.items[index].description = e.target.value;
             markAsChanged();
         });
+
+        card.querySelector('.perk-icon-input').addEventListener('change', (e) => {
+            siteData.perks.items[index].icon = e.target.value;
+            markAsChanged();
+        });
+
+        card.querySelector('.delete-perk-btn').addEventListener('click', () => {
+            const perkTitle = siteData.perks.items[index].title || 'this perk';
+            showConfirmModal('Delete Perk', `Are you sure you want to delete "${perkTitle}"?`, () => {
+                siteData.perks.items.splice(index, 1);
+                renderPerks();
+                markAsChanged();
+            });
+        });
     });
 }
 
@@ -1337,6 +1366,21 @@ document.getElementById('addSugarFreeFlavor').addEventListener('click', () => {
 document.getElementById('addExtra').addEventListener('click', () => {
     siteData.flavors.extras.push({ name: 'New Extra', price: 0.25 });
     renderFlavors();
+    markAsChanged();
+});
+
+document.getElementById('addPerkBtn').addEventListener('click', () => {
+    if (!siteData.perks) siteData.perks = { title: 'Rewards & Perks', items: [] };
+    if (!Array.isArray(siteData.perks.items)) siteData.perks.items = [];
+
+    const maxId = siteData.perks.items.reduce((m, p) => Math.max(m, p.id || 0), 0);
+    siteData.perks.items.push({
+        id: maxId + 1,
+        title: 'New Perk',
+        description: '',
+        icon: 'star'
+    });
+    renderPerks();
     markAsChanged();
 });
 

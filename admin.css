@@ -780,6 +780,21 @@ h1, h2, h3, h4 {
     margin-bottom: 15px;
 }
 
+.perk-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.perk-card-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-text-muted);
+    font-weight: 600;
+}
+
 /* ===== Save Bar ===== */
 .save-bar {
     position: fixed;
