@@ -14,4 +14,9 @@ services:
       - NODE_ENV=production
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:?ADMIN_PASSWORD must be set in environment or .env file}
       - SESSION_SECRET=${SESSION_SECRET:?SESSION_SECRET must be set in environment or .env file}
+      # Set COOKIE_SECURE=false if the container is reached over plain HTTP
+      # (e.g. no HTTPS reverse proxy in front yet). Otherwise the browser
+      # will silently refuse to store the session cookie and every
+      # authenticated request will 401.
+      - COOKIE_SECURE=${COOKIE_SECURE:-true}
     restart: always

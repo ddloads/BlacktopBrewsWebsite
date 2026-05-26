@@ -66,6 +66,29 @@ if (!SESSION_SECRET || SESSION_SECRET.length < 16) {
     process.exit(1);
 }
 
+// COOKIE_SECURE: defaults to true in production, false in development. Override
+// explicitly with COOKIE_SECURE=true|false (useful when running behind a proxy
+// that terminates HTTPS, or when no HTTPS is in front yet).
+const COOKIE_SECURE = process.env.COOKIE_SECURE !== undefined
+    ? process.env.COOKIE_SECURE === 'true'
+    : process.env.NODE_ENV === 'production';
+
+// Trust the first proxy hop so req.ip / req.protocol reflect the real client
+// when behind nginx, Cloudflare tunnel, Portainer, etc.
+app.set('trust proxy', 1);
+
+// Startup configuration dump — visible in `docker logs` / Portainer container logs.
+console.log('[CONFIG] PORT=' + PORT);
+console.log('[CONFIG] NODE_ENV=' + (process.env.NODE_ENV || 'development'));
+console.log('[CONFIG] COOKIE_SECURE=' + COOKIE_SECURE +
+    (COOKIE_SECURE ? '  (browsers will only store the session cookie over HTTPS)' : ''));
+if (COOKIE_SECURE) {
+    console.warn('[CONFIG] WARNING: COOKIE_SECURE is on. If this server is reached over plain HTTP,');
+    console.warn('[CONFIG]          the browser will silently drop the session cookie and every');
+    console.warn('[CONFIG]          authenticated request will 401. Put HTTPS in front, or set');
+    console.warn('[CONFIG]          COOKIE_SECURE=false to unblock during setup.');
+}
+
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -76,12 +99,36 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: process.env.NODE_ENV === 'production',
+        secure: COOKIE_SECURE,
         httpOnly: true,
         sameSite: 'lax',
         maxAge: 24 * 60 * 60 * 1000 // 24 hours
     }
 }));
+
+// Request logger — fires on every response. Logs API calls and any 4xx/5xx so
+// you can spot auth failures, upload errors, etc. directly in container logs.
+app.use((req, res, next) => {
+    const start = Date.now();
+    res.on('finish', () => {
+        const isApi = req.path.startsWith('/api/');
+        const isError = res.statusCode >= 400;
+        if (!isApi && !isError) return; // skip static-asset chatter
+
+        const duration = Date.now() - start;
+        const hasCookieHeader = !!req.headers.cookie;
+        const hasSidCookie = hasCookieHeader && req.headers.cookie.includes('connect.sid');
+        const fwdProto = req.headers['x-forwarded-proto'] || '-';
+        const sessionAuth = !!(req.session && req.session.authenticated);
+        console.log(
+            `[REQ] ${new Date().toISOString()} ${req.method} ${req.path} ` +
+            `${res.statusCode} ${duration}ms ip=${req.ip} ` +
+            `proto=${req.protocol} fwd-proto=${fwdProto} ` +
+            `auth=${sessionAuth} cookie=${hasSidCookie}`
+        );
+    });
+    next();
+});
 
 // Rate limiting for login attempts
 const loginAttempts = new Map();
@@ -115,10 +162,30 @@ function recordLoginAttempt(ip, success) {
 // Auth middleware
 function requireAuth(req, res, next) {
     if (req.session && req.session.authenticated) {
-        next();
-    } else {
-        res.status(401).json({ error: 'Unauthorized' });
+        return next();
     }
+
+    const hasCookieHeader = !!req.headers.cookie;
+    const hasSidCookie = hasCookieHeader && req.headers.cookie.includes('connect.sid');
+    const fwdProto = req.headers['x-forwarded-proto'] || '-';
+
+    console.warn(
+        `[AUTH] 401 ${req.method} ${req.path} ip=${req.ip} ` +
+        `session-exists=${!!req.session} authenticated=${!!(req.session && req.session.authenticated)} ` +
+        `cookie-header=${hasCookieHeader} sid-cookie=${hasSidCookie} ` +
+        `proto=${req.protocol} fwd-proto=${fwdProto}`
+    );
+
+    // Targeted hint for the most common cause: secure-cookie + plain-HTTP mismatch.
+    if (COOKIE_SECURE && !hasSidCookie && req.protocol === 'http' && fwdProto !== 'https') {
+        console.warn(
+            '[AUTH] HINT: COOKIE_SECURE=true but this request arrived over plain HTTP. ' +
+            'The browser will not send (or store) a Secure session cookie over HTTP. ' +
+            'Either put HTTPS in front of the server, or set COOKIE_SECURE=false in the environment.'
+        );
+    }
+
+    res.status(401).json({ error: 'Unauthorized' });
 }
 
 // Data file path
@@ -211,6 +278,7 @@ app.post('/api/login', (req, res) => {
     const ip = req.ip || req.connection.remoteAddress;
 
     if (!checkRateLimit(ip)) {
+        console.warn(`[LOGIN] rate-limited ip=${ip}`);
         return res.status(429).json({
             error: 'Too many login attempts. Please try again later.'
         });
@@ -225,9 +293,12 @@ app.post('/api/login', (req, res) => {
     if (valid) {
         recordLoginAttempt(ip, true);
         req.session.authenticated = true;
+        console.log(`[LOGIN] success ip=${ip} proto=${req.protocol} fwd-proto=${req.headers['x-forwarded-proto'] || '-'}`);
         res.json({ success: true });
     } else {
         recordLoginAttempt(ip, false);
+        const remaining = MAX_ATTEMPTS - (loginAttempts.get(ip)?.count || 0);
+        console.warn(`[LOGIN] invalid-password ip=${ip} remaining-attempts=${Math.max(remaining, 0)}`);
         res.status(401).json({ error: 'Invalid password' });
     }
 });
@@ -383,8 +454,11 @@ app.delete('/api/menu/categories/:categoryId', requireAuth, (req, res) => {
 app.post('/api/upload', requireAuth, upload.single('image'), (req, res) => {
     try {
         if (!req.file) {
+            console.warn('[UPLOAD] no file in request');
             return res.status(400).json({ error: 'No file uploaded' });
         }
+
+        console.log(`[UPLOAD] saved file=${req.file.filename} size=${req.file.size} original="${req.file.originalname}"`);
 
         // Return the URL to access the uploaded file
         const fileUrl = `/uploads/${req.file.filename}`;
@@ -396,7 +470,7 @@ app.post('/api/upload', requireAuth, upload.single('image'), (req, res) => {
             size: req.file.size
         });
     } catch (error) {
-        console.error('Upload error:', error);
+        console.error('[UPLOAD] failed:', error);
         res.status(500).json({ error: 'Failed to upload file' });
     }
 });
