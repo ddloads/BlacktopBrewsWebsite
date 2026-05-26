@@ -285,6 +285,26 @@
                         </div>
                     </div>
 
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h3>Import / Export</h3>
+                            <div class="header-actions">
+                                <button class="btn btn-sm btn-outline" id="exportMenuBtn">
+                                    <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                                    Export Menu
+                                </button>
+                                <button class="btn btn-sm btn-outline" id="importMenuBtn">
+                                    <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
+                                    Import Menu
+                                </button>
+                                <input type="file" id="importMenuFileInput" accept="application/json,.json" class="file-input" style="display: none;">
+                            </div>
+                        </div>
+                        <p style="color: var(--color-text-muted); font-size: 14px; margin-bottom: 0;">
+                            Export the current menu as a JSON file you can edit or back up. Import a previously exported file to replace the current menu — you'll be asked to confirm before anything changes, and changes won't be saved to the server until you click Save.
+                        </p>
+                    </div>
+
                     <div class="menu-manager" id="menuManager">
                         <!-- Categories will be rendered here -->
                     </div>

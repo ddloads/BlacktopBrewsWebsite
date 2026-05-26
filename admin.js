@@ -772,6 +772,134 @@ function renderMenu() {
     bindMenuListeners();
 }
 
+// ===== Menu Import / Export =====
+function exportMenu() {
+    try {
+        const menuJson = JSON.stringify(siteData.menu, null, 2);
+        const blob = new Blob([menuJson], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+
+        const date = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `blacktop-brews-menu-${date}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        showToast('Menu exported', 'success');
+    } catch (error) {
+        console.error('Export error:', error);
+        showToast('Failed to export menu', 'error');
+    }
+}
+
+// Validate an imported menu object. Returns { ok: true, menu } on success
+// or { ok: false, error } with a human-readable message.
+function validateImportedMenu(raw) {
+    if (!raw || typeof raw !== 'object') {
+        return { ok: false, error: 'File is not a valid JSON object.' };
+    }
+
+    // Accept either a menu-shaped object or a full site-data with a .menu key.
+    const menu = raw.categories ? raw : raw.menu;
+    if (!menu || !Array.isArray(menu.categories)) {
+        return { ok: false, error: 'JSON does not contain a "categories" array.' };
+    }
+
+    for (let ci = 0; ci < menu.categories.length; ci++) {
+        const c = menu.categories[ci];
+        if (!c || typeof c !== 'object') {
+            return { ok: false, error: `Category at index ${ci} is not an object.` };
+        }
+        if (typeof c.name !== 'string' || !c.name.trim()) {
+            return { ok: false, error: `Category at index ${ci} is missing a name.` };
+        }
+        if (!Array.isArray(c.items)) {
+            return { ok: false, error: `Category "${c.name}" is missing an items array.` };
+        }
+        for (let ii = 0; ii < c.items.length; ii++) {
+            const item = c.items[ii];
+            if (!item || typeof item !== 'object') {
+                return { ok: false, error: `Item at index ${ii} in "${c.name}" is not an object.` };
+            }
+            if (typeof item.name !== 'string' || !item.name.trim()) {
+                return { ok: false, error: `Item at index ${ii} in "${c.name}" is missing a name.` };
+            }
+            if (typeof item.price !== 'number' || isNaN(item.price)) {
+                return { ok: false, error: `Item "${item.name}" in "${c.name}" has an invalid price.` };
+            }
+        }
+    }
+
+    // Normalize: ensure title/subtitle exist, items have ids, categories have ids/order/active flags.
+    const existingIds = new Set();
+    let maxItemId = 0;
+    menu.categories.forEach((c, idx) => {
+        if (!c.id || typeof c.id !== 'string') {
+            c.id = c.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+        }
+        if (existingIds.has(c.id)) c.id = `${c.id}-${idx}`;
+        existingIds.add(c.id);
+        if (typeof c.order !== 'number') c.order = idx + 1;
+        if (typeof c.active !== 'boolean') c.active = true;
+        c.items.forEach(item => {
+            if (typeof item.id !== 'number') item.id = ++maxItemId;
+            else maxItemId = Math.max(maxItemId, item.id);
+            if (typeof item.description !== 'string') item.description = '';
+            if (typeof item.active !== 'boolean') item.active = true;
+        });
+    });
+
+    return {
+        ok: true,
+        menu: {
+            title: typeof menu.title === 'string' ? menu.title : (siteData.menu.title || ''),
+            subtitle: typeof menu.subtitle === 'string' ? menu.subtitle : (siteData.menu.subtitle || ''),
+            categories: menu.categories
+        }
+    };
+}
+
+function handleMenuImportFile(file) {
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        let parsed;
+        try {
+            parsed = JSON.parse(e.target.result);
+        } catch (err) {
+            showToast('Invalid JSON: ' + err.message, 'error');
+            return;
+        }
+
+        const result = validateImportedMenu(parsed);
+        if (!result.ok) {
+            showToast(result.error, 'error');
+            return;
+        }
+
+        const catCount = result.menu.categories.length;
+        const itemCount = result.menu.categories.reduce((sum, c) => sum + c.items.length, 0);
+        const message = `This will replace the current menu with ${catCount} ` +
+            `categor${catCount === 1 ? 'y' : 'ies'} and ${itemCount} item${itemCount === 1 ? '' : 's'}. ` +
+            `Changes won't be saved to the server until you click Save Changes.`;
+
+        showConfirmModal('Import Menu', message, () => {
+            siteData.menu = result.menu;
+            renderMenu();
+            markAsChanged();
+            showToast(`Imported ${catCount} categories, ${itemCount} items`, 'success');
+        });
+    };
+    reader.onerror = () => {
+        showToast('Failed to read file', 'error');
+    };
+    reader.readAsText(file);
+}
+
 function renderFlavors() {
     setFieldValue('flavorsTitle', siteData.flavors.title);
     setFieldValue('flavorsSubtitle', siteData.flavors.subtitle);
@@ -1048,6 +1176,18 @@ document.querySelectorAll('.nav-item').forEach(item => {
 // ===== Add Buttons =====
 document.getElementById('addCategoryBtn').addEventListener('click', () => {
     showAddCategoryModal();
+});
+
+// Menu import / export
+document.getElementById('exportMenuBtn').addEventListener('click', exportMenu);
+
+const importMenuFileInput = document.getElementById('importMenuFileInput');
+document.getElementById('importMenuBtn').addEventListener('click', () => {
+    importMenuFileInput.value = ''; // allow re-importing the same file
+    importMenuFileInput.click();
+});
+importMenuFileInput.addEventListener('change', (e) => {
+    handleMenuImportFile(e.target.files[0]);
 });
 
 document.getElementById('addRegularFlavor').addEventListener('click', () => {
