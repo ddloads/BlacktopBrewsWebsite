@@ -742,20 +742,51 @@ function renderMenu() {
                 ${category.items.map(item => {
                     // Ensure active property exists
                     if (item.active === undefined) item.active = true;
+                    const hasSizes = Array.isArray(item.sizes) && item.sizes.length > 0;
+                    const dimOpacity = !item.active ? 'style="opacity: 0.5"' : '';
                     return `
-                    <div class="menu-item-row ${!item.active ? 'inactive' : ''}" data-item-id="${item.id}">
-                        <label class="item-visibility-toggle" title="${item.active ? 'Visible' : 'Hidden'}">
-                            <input type="checkbox" class="item-active-toggle" ${item.active ? 'checked' : ''}>
-                            <span class="mini-toggle-slider"></span>
-                        </label>
-                        <input type="text" value="${item.name}" placeholder="Item name" class="item-name-input" ${!item.active ? 'style="opacity: 0.5"' : ''}>
-                        <input type="text" value="${item.description}" placeholder="Description" class="item-desc-input" ${!item.active ? 'style="opacity: 0.5"' : ''}>
-                        <div class="price-input">
-                            <input type="number" value="${item.price.toFixed(2)}" step="0.25" min="0" class="item-price-input" ${!item.active ? 'style="opacity: 0.5"' : ''}>
+                    <div class="menu-item-wrapper ${!item.active ? 'inactive' : ''}" data-item-id="${item.id}">
+                        <div class="menu-item-row">
+                            <label class="item-visibility-toggle" title="${item.active ? 'Visible' : 'Hidden'}">
+                                <input type="checkbox" class="item-active-toggle" ${item.active ? 'checked' : ''}>
+                                <span class="mini-toggle-slider"></span>
+                            </label>
+                            <input type="text" value="${item.name}" placeholder="Item name" class="item-name-input" ${dimOpacity}>
+                            <input type="text" value="${item.description}" placeholder="Description" class="item-desc-input" ${dimOpacity}>
+                            ${hasSizes
+                                ? `<div class="item-sizes-summary" ${dimOpacity}>${item.sizes.length} size${item.sizes.length === 1 ? '' : 's'}</div>`
+                                : `<div class="price-input">
+                                       <input type="number" value="${(item.price || 0).toFixed(2)}" step="0.25" min="0" class="item-price-input" ${dimOpacity}>
+                                   </div>`
+                            }
+                            <button class="btn-toggle-sizes ${hasSizes ? 'active' : ''}" title="${hasSizes ? 'Remove sizes' : 'Add size variants'}">
+                                <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M3 5v14h2V5H3zm4 0v14h2V5H7zm4 0v14h4V5h-4zm6 0v14h2V5h-2zm4 0v14h-2V5h2z"/></svg>
+                            </button>
+                            <button class="delete-btn delete-item-btn" title="Delete item">
+                                <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                            </button>
                         </div>
-                        <button class="delete-btn delete-item-btn" title="Delete item">
-                            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-                        </button>
+                        ${hasSizes ? `
+                        <div class="item-sizes-editor">
+                            <div class="sizes-list">
+                                ${item.sizes.map((s, i) => `
+                                    <div class="size-row" data-size-index="${i}">
+                                        <input type="text" value="${s.name || ''}" placeholder="Size (e.g. 12oz)" class="size-name-input">
+                                        <div class="price-input">
+                                            <input type="number" value="${(typeof s.price === 'number' ? s.price : 0).toFixed(2)}" step="0.25" min="0" class="size-price-input">
+                                        </div>
+                                        <button class="delete-btn delete-size-btn" title="Remove this size">
+                                            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M19 13H5v-2h14v2z"/></svg>
+                                        </button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <button class="add-size-btn">
+                                <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                                Add Size
+                            </button>
+                        </div>
+                        ` : ''}
                     </div>
                 `}).join('')}
                 <button class="add-item-btn" data-category-id="${category.id}">
@@ -827,8 +858,21 @@ function validateImportedMenu(raw) {
             if (typeof item.name !== 'string' || !item.name.trim()) {
                 return { ok: false, error: `Item at index ${ii} in "${c.name}" is missing a name.` };
             }
-            if (typeof item.price !== 'number' || isNaN(item.price)) {
+            const hasSizes = Array.isArray(item.sizes) && item.sizes.length > 0;
+            if (!hasSizes && (typeof item.price !== 'number' || isNaN(item.price))) {
                 return { ok: false, error: `Item "${item.name}" in "${c.name}" has an invalid price.` };
+            }
+            if (hasSizes) {
+                for (let si = 0; si < item.sizes.length; si++) {
+                    const s = item.sizes[si];
+                    if (!s || typeof s !== 'object') {
+                        return { ok: false, error: `Size at index ${si} on "${item.name}" is not an object.` };
+                    }
+                    if (typeof s.price !== 'number' || isNaN(s.price)) {
+                        return { ok: false, error: `Size "${s.name || si}" on "${item.name}" has an invalid price.` };
+                    }
+                    if (typeof s.name !== 'string') s.name = '';
+                }
             }
         }
     }
@@ -849,6 +893,10 @@ function validateImportedMenu(raw) {
             else maxItemId = Math.max(maxItemId, item.id);
             if (typeof item.description !== 'string') item.description = '';
             if (typeof item.active !== 'boolean') item.active = true;
+            // For sized items, ensure a fallback price exists (used if sizes is later cleared).
+            if (Array.isArray(item.sizes) && item.sizes.length > 0 && typeof item.price !== 'number') {
+                item.price = item.sizes[0].price;
+            }
         });
     });
 
@@ -1140,39 +1188,92 @@ function bindMenuListeners() {
     });
 
     // Item name/desc/price changes
-    document.querySelectorAll('.menu-item-row').forEach(row => {
-        const categoryEl = row.closest('.menu-category');
+    document.querySelectorAll('.menu-item-wrapper').forEach(wrapper => {
+        const categoryEl = wrapper.closest('.menu-category');
         const categoryId = categoryEl.dataset.categoryId;
-        const itemId = parseInt(row.dataset.itemId);
+        const itemId = parseInt(wrapper.dataset.itemId);
         const category = siteData.menu.categories.find(c => c.id === categoryId);
         const item = category.items.find(i => i.id === itemId);
 
-        row.querySelector('.item-name-input').addEventListener('input', (e) => {
+        wrapper.querySelector('.item-name-input').addEventListener('input', (e) => {
             item.name = e.target.value;
             markAsChanged();
         });
 
-        row.querySelector('.item-desc-input').addEventListener('input', (e) => {
+        wrapper.querySelector('.item-desc-input').addEventListener('input', (e) => {
             item.description = e.target.value;
             markAsChanged();
         });
 
-        row.querySelector('.item-price-input').addEventListener('input', (e) => {
-            item.price = parseFloat(e.target.value) || 0;
+        const priceInput = wrapper.querySelector('.item-price-input');
+        if (priceInput) {
+            priceInput.addEventListener('input', (e) => {
+                item.price = parseFloat(e.target.value) || 0;
+                markAsChanged();
+            });
+        }
+
+        // Toggle sizes mode on/off for this item
+        wrapper.querySelector('.btn-toggle-sizes').addEventListener('click', () => {
+            const hasSizes = Array.isArray(item.sizes) && item.sizes.length > 0;
+            if (hasSizes) {
+                // Disable sizes: keep the first size's price as the single price.
+                item.price = typeof item.sizes[0].price === 'number' ? item.sizes[0].price : (item.price || 0);
+                delete item.sizes;
+            } else {
+                // Enable sizes: seed with one entry using the current single price.
+                item.sizes = [{ name: '12oz', price: item.price || 0 }];
+            }
+            renderMenu();
             markAsChanged();
         });
+
+        // Per-size inputs and delete
+        wrapper.querySelectorAll('.size-row').forEach(sizeRow => {
+            const sizeIndex = parseInt(sizeRow.dataset.sizeIndex);
+            sizeRow.querySelector('.size-name-input').addEventListener('input', (e) => {
+                item.sizes[sizeIndex].name = e.target.value;
+                markAsChanged();
+            });
+            sizeRow.querySelector('.size-price-input').addEventListener('input', (e) => {
+                item.sizes[sizeIndex].price = parseFloat(e.target.value) || 0;
+                markAsChanged();
+            });
+            sizeRow.querySelector('.delete-size-btn').addEventListener('click', () => {
+                item.sizes.splice(sizeIndex, 1);
+                if (item.sizes.length === 0) {
+                    // Last size removed — fall back to single-price mode.
+                    delete item.sizes;
+                }
+                renderMenu();
+                markAsChanged();
+            });
+        });
+
+        // Add size
+        const addSizeBtn = wrapper.querySelector('.add-size-btn');
+        if (addSizeBtn) {
+            addSizeBtn.addEventListener('click', () => {
+                if (!Array.isArray(item.sizes)) item.sizes = [];
+                // Default new size: copy last size's price as a starting point, or use 0.
+                const lastPrice = item.sizes.length > 0 ? item.sizes[item.sizes.length - 1].price : 0;
+                item.sizes.push({ name: '', price: lastPrice });
+                renderMenu();
+                markAsChanged();
+            });
+        }
     });
 
     // Delete item
     document.querySelectorAll('.delete-item-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const row = e.target.closest('.menu-item-row');
-            const categoryEl = row.closest('.menu-category');
+            const wrapper = e.target.closest('.menu-item-wrapper');
+            const categoryEl = wrapper.closest('.menu-category');
             const categoryId = categoryEl.dataset.categoryId;
-            const itemId = parseInt(row.dataset.itemId);
+            const itemId = parseInt(wrapper.dataset.itemId);
             const category = siteData.menu.categories.find(c => c.id === categoryId);
             category.items = category.items.filter(i => i.id !== itemId);
-            row.remove();
+            wrapper.remove();
             markAsChanged();
         });
     });
@@ -1214,17 +1315,17 @@ function bindMenuListeners() {
     // Item visibility toggle
     document.querySelectorAll('.item-active-toggle').forEach(toggle => {
         toggle.addEventListener('change', (e) => {
-            const row = e.target.closest('.menu-item-row');
-            const categoryEl = row.closest('.menu-category');
+            const wrapper = e.target.closest('.menu-item-wrapper');
+            const categoryEl = wrapper.closest('.menu-category');
             const categoryId = categoryEl.dataset.categoryId;
-            const itemId = parseInt(row.dataset.itemId);
+            const itemId = parseInt(wrapper.dataset.itemId);
             const category = siteData.menu.categories.find(c => c.id === categoryId);
             const item = category.items.find(i => i.id === itemId);
             item.active = e.target.checked;
 
             // Update UI
-            row.classList.toggle('inactive', !item.active);
-            row.querySelectorAll('input[type="text"], input[type="number"]').forEach(input => {
+            wrapper.classList.toggle('inactive', !item.active);
+            wrapper.querySelectorAll('input[type="text"], input[type="number"]').forEach(input => {
                 input.style.opacity = item.active ? '1' : '0.5';
             });
             markAsChanged();

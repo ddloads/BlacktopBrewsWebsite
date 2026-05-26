@@ -302,15 +302,26 @@ function renderMenu() {
                     <h3>${category.name}</h3>
                 </div>
                 <div class="menu-items">
-                    ${activeItems.map(item => `
-                        <div class="menu-item">
+                    ${activeItems.map(item => {
+                        const hasSizes = Array.isArray(item.sizes) && item.sizes.length > 0;
+                        const priceHtml = hasSizes
+                            ? `<div class="item-sizes">${item.sizes.map(s => `
+                                    <div class="item-size">
+                                        ${s.name ? `<span class="size-name">${s.name}</span>` : ''}
+                                        <span class="size-price">$${(typeof s.price === 'number' ? s.price : 0).toFixed(2)}</span>
+                                    </div>
+                                `).join('')}</div>`
+                            : `<span class="item-price">$${(typeof item.price === 'number' ? item.price : 0).toFixed(2)}</span>`;
+                        return `
+                        <div class="menu-item ${hasSizes ? 'has-sizes' : ''}">
                             <div class="item-info">
                                 <span class="item-name">${item.name}</span>
                                 <span class="item-desc">${item.description}</span>
                             </div>
-                            <span class="item-price">$${item.price.toFixed(2)}</span>
+                            ${priceHtml}
                         </div>
-                    `).join('')}
+                    `;
+                    }).join('')}
                 </div>
             </div>
         `;

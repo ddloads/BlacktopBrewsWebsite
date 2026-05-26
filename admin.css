@@ -515,26 +515,122 @@ h1, h2, h3, h4 {
     background: var(--color-white);
 }
 
-.menu-item-row.inactive {
-    background: var(--color-background-light);
-    border: 1px dashed var(--color-background-card);
-}
-
 .category-items {
     padding: 20px 25px;
     overflow: hidden;
 }
 
-.menu-item-row {
-    display: grid;
-    grid-template-columns: 36px 1fr 1.5fr 80px 44px;
-    gap: 8px;
-    align-items: center;
-    padding: 12px 15px;
+.menu-item-wrapper {
     background: var(--color-background);
     border-radius: var(--radius-sm);
     margin-bottom: 10px;
     transition: var(--transition);
+}
+
+.menu-item-wrapper.inactive {
+    background: var(--color-background-light);
+    border: 1px dashed var(--color-background-card);
+}
+
+.menu-item-row {
+    display: grid;
+    grid-template-columns: 36px 1fr 1.5fr 80px 36px 44px;
+    gap: 8px;
+    align-items: center;
+    padding: 12px 15px;
+}
+
+.item-sizes-summary {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    text-align: center;
+    padding: 10px 12px;
+    background: var(--color-background-light);
+    border: 1px solid var(--color-background-card);
+    border-radius: 6px;
+}
+
+.btn-toggle-sizes {
+    background: transparent;
+    border: 1px solid var(--color-background-card);
+    color: var(--color-text-muted);
+    border-radius: 6px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    padding: 0;
+}
+
+.btn-toggle-sizes:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+}
+
+.btn-toggle-sizes.active {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-background);
+}
+
+.item-sizes-editor {
+    padding: 0 15px 15px 59px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.size-row {
+    display: grid;
+    grid-template-columns: 1fr 100px 36px;
+    gap: 8px;
+    align-items: center;
+}
+
+.size-row input {
+    width: 100%;
+    min-width: 0;
+    padding: 8px 10px;
+    background: var(--color-background-light);
+    border: 1px solid var(--color-background-card);
+    border-radius: 6px;
+    color: var(--color-text);
+    font-size: 13px;
+    box-sizing: border-box;
+}
+
+.size-row input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+}
+
+.add-size-btn {
+    align-self: flex-start;
+    background: transparent;
+    border: 1px dashed var(--color-background-card);
+    color: var(--color-text-muted);
+    border-radius: 6px;
+    padding: 6px 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: var(--transition);
+}
+
+.add-size-btn:hover {
+    border-color: var(--color-accent);
+    border-style: solid;
+    color: var(--color-accent);
+}
+
+.delete-size-btn {
+    width: 36px;
+    height: 36px;
 }
 
 .menu-item-row input {
