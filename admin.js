@@ -632,21 +632,27 @@ function addNewGalleryImage() {
 }
 
 function renderHours() {
+    const defaultSchedule = [
+        { day: "Monday", time: "", location: "", closed: false },
+        { day: "Tuesday", time: "", location: "", closed: false },
+        { day: "Wednesday", time: "", location: "", closed: false },
+        { day: "Thursday", time: "", location: "", closed: false },
+        { day: "Friday", time: "", location: "", closed: false },
+        { day: "Saturday", time: "", location: "", closed: false },
+        { day: "Sunday", time: "", location: "", closed: true }
+    ];
+
     if (!siteData.business.hours) {
         // Initialize hours if not present
         siteData.business.hours = {
             title: "Find Us This Week",
             subtitle: "Serving fresh coffee at these locations",
-            schedule: [
-                { day: "Monday", time: "", location: "", closed: false },
-                { day: "Tuesday", time: "", location: "", closed: false },
-                { day: "Wednesday", time: "", location: "", closed: false },
-                { day: "Thursday", time: "", location: "", closed: false },
-                { day: "Friday", time: "", location: "", closed: false },
-                { day: "Saturday", time: "", location: "", closed: false },
-                { day: "Sunday", time: "", location: "", closed: true }
-            ]
+            schedule: defaultSchedule
         };
+    } else if (!Array.isArray(siteData.business.hours.schedule) || siteData.business.hours.schedule.length === 0) {
+        // Hours exists but schedule is missing/empty — re-seed with 7 days so the admin is editable.
+        // Title/subtitle are preserved exactly as they were.
+        siteData.business.hours.schedule = defaultSchedule;
     }
 
     setFieldValue('hoursTitle', siteData.business.hours.title);
